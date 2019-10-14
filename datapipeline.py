@@ -1,6 +1,4 @@
 import pandas as pd
-import psycopg2 as pg2
-import pandas as pd
 import numpy as np
 
 class pipeline(object):
@@ -58,7 +56,7 @@ class pipeline(object):
     
     def save_csv(self, df, save_name):
         path = self.data_path.format(save_name)
-        print(path)
+        print('Saving to: ', path)
         df.to_csv(path_or_buf = path)
 
     def load_from_postgres(self):
@@ -71,10 +69,8 @@ if __name__ == '__main__':
     file_name = 'posts_2019.csv'
     pipe = pipeline()
     data = pipe.load_csv(file_name)
-    print(data['title'])
 
     data = pipe.remove_type_tags_in_title(data)
-    print(data['title'])
-    
+
     save_name = 'posts_2019_all_cleaned.csv'
     pipe.save_csv(data, save_name)
