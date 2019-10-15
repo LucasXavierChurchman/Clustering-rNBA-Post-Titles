@@ -14,12 +14,14 @@ class EDA(object):
         file_name = 'posts_2019.csv'
         pipe = pipeline()
         self.df = pipe.load_csv(file_name)
+
         self.types_wanted = ['highlights', 
                             'gamethread', 
                             'postgamethread', 
                             'news',
                             'discussion',
                             'rostermoves']
+
     def summary_stats(self):
         df = self.df
         types = self.types_wanted
@@ -56,11 +58,11 @@ class EDA(object):
             'Std Title Length (words)': std_len_words}
         
         per_type_table = pd.DataFrame.from_dict(d2).round(2)
-        per_type_table.to_csv('data/SummaryStatsPerType.csv')
+        per_type_table.to_csv('tables/SummaryStatsPerType.csv')
         return  all_table, per_type_table
 
     def summary_hist(self, table):
-        table = pd.read_csv('data/SummaryStatsPerType.csv')
+        table = pd.read_csv('tables/SummaryStatsPerType.csv')
 
         barWidth = 0.25
         bars1 = table['Number of Posts']/100

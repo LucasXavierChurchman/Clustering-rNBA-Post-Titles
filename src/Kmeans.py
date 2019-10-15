@@ -33,5 +33,5 @@ if __name__ == '__main__':
     tfidf = tfidf_vectorizer.fit_transform(all_text)
 
     kmeans = KMeans(n_clusters=6).fit(tfidf)
-tfidf_vectorizer.transform(lines_for_predicting)
+    tfidf_vectorizer.transform(lines_for_predicting)
     
