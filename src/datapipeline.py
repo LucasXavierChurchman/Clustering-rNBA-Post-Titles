@@ -27,6 +27,8 @@ class pipeline(object):
         path = self.data_path.format(file_name)
         df = pd.read_csv(path, low_memory = False)
         df = df[cols]
+        # df['type'] = df['link_flair_css_class'] 
+        df.rename(columns = {'link_flair_css_class' :'type'}, inplace = True)
         return df
 
     def remove_type_tags_in_title(self, df):
@@ -55,14 +57,18 @@ class pipeline(object):
         return df
     
     def save_csv(self, df, save_name):
+        '''
+        Saves data frame to consistent path
+        '''
         path = self.data_path.format(save_name)
         print('Saving to: ', path)
         df.to_csv(path_or_buf = path)
 
-    def load_from_postgres(self):
+    def load_postgres(self):
         '''
         placeholder incase needed for later
         '''
+        pass
         
 if __name__ == '__main__':
 
@@ -74,3 +80,6 @@ if __name__ == '__main__':
 
     save_name = 'posts_2019_all_cleaned.csv'
     pipe.save_csv(data, save_name)
+
+    test_data = pipe.load_csv(file_name).sample(1000)
+    pipe.save_csv(test_data, 'test_set.csv')

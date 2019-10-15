@@ -1,0 +1,7 @@
+,Type,Number of Posts,Avg Title Length (chars),Avg Title Length (words),Std Title Length (chars),Std Title Length (words)
+0,highlights,16810,70.33,12.52,43.53,8.06
+1,gamethread,1015,80.69,13.07,12.09,1.87
+2,postgamethread,1241,107.86,16.42,26.7,4.44
+3,news,6790,149.61,24.71,73.16,12.79
+4,discussion,1426,95.61,16.76,61.09,11.01
+5,rostermoves,2267,117.71,20.78,71.72,12.42
