@@ -33,7 +33,7 @@ class EDA(object):
             'Std Title Length (words)': np.std((df['title'].str.split().apply(len)))}
 
         all_table = pd.DataFrame(d1, index = [0]).round(2)
-        all_table.to_csv('data/SummaryStatsAll.csv')
+        all_table.to_csv('tables/SummaryStatsAll.csv')
 
         #Posts Per-Type
         n_of_type = []

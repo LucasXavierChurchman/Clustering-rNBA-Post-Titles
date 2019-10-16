@@ -34,7 +34,10 @@ if __name__ == '__main__':
                 'Damian Lillard sends it to OT - NBCSC',
                 '[Highlights] Gordon Hayward drops 35 on 14/18 fg, 4/7 3PT, with 5 assists - Full Highlights with Defense"'
                 'GAME THREAD: New York Knicks (9-28) @ Denver Nuggets (23-11) - (January 01, 2019)',
-                'GAME THREAD: Brooklyn Nets (1-0) @ Philadelphia 76ers (0-1) - (April 15, 2019)'] 
+                'GAME THREAD: Brooklyn Nets (1-0) @ Philadelphia 76ers (0-1) - (April 15, 2019)',
+                '[RDA] The Los Angeles Lakers strongly feel they can address Kwahi Leonard’s main concerns regarding load management and ultimately gain his trust to have him sign a deal.',
+                'Why teams are not willing to sign Carmelo Anthony',
+                ]
 
     #need to pop samples from training data       
     file_name = 'balanced_types_1000.csv'
