@@ -49,7 +49,7 @@ for n_clusters in range_n_clusters:
     # Initialize the clusterer with n_clusters value and a random generator
     # seed of 10 for reproducibility.
     
-    kmeans = load('KM-tfidf-n6.joblib')
+    kmeans = load('models/KM-tfidf-n6.joblib')
     cluster_labels = kmeans.fit_predict(X)
 
     # The silhouette_score gives the average value for all the samples.
@@ -97,6 +97,7 @@ for n_clusters in range_n_clusters:
 
     # 2nd Plot showing the actual clusters formed
     colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
+
     ax2.scatter(X[:, 0], X[:, 1], marker='.', s=30, lw=0, alpha=0.7,
                 c=colors, edgecolor='k')
 

@@ -73,7 +73,7 @@ def do_Kmeans(n, v_matrix):
     end = time.time()
     print('Time to fit K-Means = ', end - start)
 
-    dump_path = 'KM-tfidf-n{}.joblib'.format(str(n))
+    dump_path = 'models/KM-tfidf-n{}.joblib'.format(str(n))
     dump(kmeans, dump_path)
 
     return kmeans
@@ -89,7 +89,7 @@ if __name__ == '__main__':
     tf_idf = tf_idfvectorize(all_text)
 
     kmeans = do_Kmeans(6, tf_idf)
-    # kmeans = load('KM-tfidf-n6.joblib')
+    # kmeans = load('models/KM-tfidf-n6.joblib')
     labels = kmeans.labels_
     silh_score = metrics.silhouette_score(tf_idf, labels, metric='euclidean')
     print('Silhouette Score: ', silh_score)
