@@ -1,13 +1,47 @@
 import re
 import nltk
-from datapipeline import pipeline
+import pandas as pd
 import string
+from datapipeline import pipeline
 from string import punctuation
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
-import pandas as pd
+from joblib import dump, load
+
+
+test_types = ['highlights', 
+        'highlights', 
+        'gamethread', 
+        'gamethread',
+        'postgamethread', 
+        'postgamethread', 
+        'news',
+        'news',
+        'discussion',
+        'discussion',
+        'rostermoves',
+        'rostermoves'
+        'highlights',
+        'news']
+
+test_lines = ['Kristaps Porzingis Full Highlights 2019.10.14 Mavs vs Thunder - 17 Pts, 13 Rebs! | FreeDawkinsHighlights',
+        '[Highlight] Oubre puts on a happy face for the Joker',
+        'GAME THREAD: Minnesota Timberwolves (1-2) @ Indiana Pacers (3-0) - (October 15, 2019)',
+        'GAME THREAD: Haifa Maccabi Haifa (0-2) @ Minnesota Timberwolves (0-2) - (October 13, 2019)Game Thread',
+        '[Post Game Thread] The Brooklyn Nets sweep the Los Angeles Lakers in China by a score of 91-77 behind 22 points from Caris Levert',
+        '[Post Game Thread] The Phoenix Suns defeat the Portland Trail Blazers 134-118, with Booker, Rubio, and Ayton out due to load management',
+        '[Price] Seth Curry will not return due to a right knee contusion.'
+        'Lowry, Gasol, Ibaka, Powell and VanVleet are all out tonight. Raptors giving their regulars some rest after the quick turnaround coming back from Japan'
+        'Some Kobe stats from 2006, his scoring season was more impressive than hardens.',
+        'Predict your team’s best player’s stat line for the 2019-20 season',
+        'Some Kobe stats from 2006, his scoring season was more impressive than hardens',
+        'Do you think Lebron will sign one-year deal to return to Cavs for his final season farewell tour?'
+        'Journalist gets quickly shut down when she asked James Harden, Russell Westbrook if they would refrain from speaking out on politics/social justice after China debacle',
+        'Dragan Bender is averaging 13/6/3 in the pre season on 61/54/85. Also 1.5 blocks. He’s looked great so far',
+        'Jordan is actually a great owner. Its just that he doesnt wanna win rings/make the playoffs. He just wants to make money. And hes damn good at it.',
+        '[Cunningham] The Minnesota Timberwolves have signed Tyus Battle and Barry Brown Jr, the team announced. Jordan Murphy and Lindell Wigginton have been waived to create the necessary room on the roster.']
 
 stopword = stopwords.words('english')
 snowball_stemmer = SnowballStemmer('english')
@@ -23,36 +57,37 @@ def preprocessing(line):
     line = ' '.join(line)
     return line
 
-if __name__ == '__main__':
-    
-    test_lines = ['[Post Game Thread] The Toronto Raptors (45-17) blowout the Boston Celtics (37-24), 118-95',
-                '[Post Game Thread] The Warriors (25-13) blow out the Suns (9-29) 132-109!',
-                '[Stein] The Mavericks will acquire Kelly Olynyk and Derrick Jones from the Heat as part of the Jimmy Butler sign-and-trade, league sources say.',
-                '[Wojnarowski] Veteran F/C Donatas Motiejunas plans to sign with the Spurs today, league sources tell ESPN. He will meet team on its current trip. Motiejunas has been playing in China for the past two seasons',
-                'Jamal Murray vs Andrew Wiggins premature max contract stats',
-                'Triple Doubles are the most important stat in basketball',
-                'Damian Lillard sends it to OT - NBCSC',
-                '[Highlights] Gordon Hayward drops 35 on 14/18 fg, 4/7 3PT, with 5 assists - Full Highlights with Defense"'
-                'GAME THREAD: New York Knicks (9-28) @ Denver Nuggets (23-11) - (January 01, 2019)',
-                'GAME THREAD: Brooklyn Nets (1-0) @ Philadelphia 76ers (0-1) - (April 15, 2019)',
-                '[RDA] The Los Angeles Lakers strongly feel they can address Kwahi Leonard’s main concerns regarding load management and ultimately gain his trust to have him sign a deal.',
-                'Why teams are not willing to sign Carmelo Anthony',
-                ]
+def tf_idf_vectorize(text):
+    vectorizer = TfidfVectorizer(preprocessor=preprocessing)
+    tfidf = vectorizer.fit_transform(text)
+    # vocab = vectorizer.vocabulary_
+    # sorted_vocab = dict(sorted((value,key) for (key,value) in vocab.items()), reverse = True)
+    return tfidf
 
-    #need to pop samples from training data       
-    file_name = 'balanced_types_1000.csv'
+def do_Kmeans(n, v_matrix):
+    kmeans = KMeans(n_clusters=n, random_state=2007).fit(v_matrix)
+    dump_path = 'KM-n{}.joblib'.format(str(n))
+    dump(kmeans, dump_path)
+    return kmeans
+
+def test_predictions(km_obj, test_text, vectorizer):
+    test_predcluster = km_obj.predict(vectorizer.transform(test_text))
+    preds = list(zip(test_types, test_predcluster, test_text))
+    preds = pd.DataFrame.from_records(preds, columns = [ 'post_label', 'pred_cluster', 'title'])  
+    preds.to_csv('tables/test_predictions.csv')
+    return preds
+
+if __name__ == '__main__':  
+    file_name = 'balanced_types_2500.csv'
     data_path = '~/Galvanize/Projects/data/Capstone2Data/{}'.format(file_name)
 
     data = pd.read_csv(data_path)
-    data.sample(frac=1, random_state = 1994) #shuffles data
+    data.sample(frac=1, random_state = 1994) #shuffles data jic
     all_text = list(data['title'])
     
-    vectorizer = TfidfVectorizer(preprocessor=preprocessing)
-    tfidf = vectorizer.fit_transform(all_text)
-    vocab = vectorizer.vocabulary_
-    sorted_vocab = dict(sorted((value,key) for (key,value) in vocab.items()), reverse = True)
+    tf_idf = tf_idf_vectorize(all_text)
 
-    kmeans = KMeans(n_clusters=6).fit(tfidf)
-    print(kmeans.predict(vectorizer.transform(test_lines)))
-    
+    # kmeans = do_Kmeans(6, tf_idf)
+    kmeans = load('KM-n6-tfidf.joblib')
+    test_predictions(kmeans, test_lines, tf_idf)
     

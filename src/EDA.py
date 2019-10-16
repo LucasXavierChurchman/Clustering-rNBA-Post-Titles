@@ -11,7 +11,7 @@ class EDA(object):
 
     def __init__(self):
 
-        file_name = 'posts_2019.csv'
+        file_name = '2018_01to2019_08.csv'
         pipe = pipeline()
         self.df = pipe.load_csv(file_name)
 

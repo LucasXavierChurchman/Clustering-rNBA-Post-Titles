@@ -54,10 +54,10 @@ class pipeline(object):
 
 if __name__ == '__main__':
 
-    file_name = 'posts_2019.csv'
+    file_name = '2018_01to2019_08.csv'
     pipe = pipeline()
     data = pipe.load_csv(file_name)
-    n_samp = 1000
+    n_samp = 2500
     types =  ['highlights', 'gamethread', 'postgamethread', 'news','discussion', 'rostermoves']
     type_samples = []
 
