@@ -8,6 +8,7 @@ from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.cluster import KMeans
+from sklearn import metrics
 from joblib import dump, load
 
 
@@ -57,7 +58,7 @@ def preprocessing(line):
     line = ' '.join(line)
     return line
 
-def tf_idf_vectorize(text):
+def tf_idfvectorize(text):
     vectorizer = TfidfVectorizer(preprocessor=preprocessing)
     tfidf = vectorizer.fit_transform(text)
     # vocab = vectorizer.vocabulary_
@@ -66,16 +67,9 @@ def tf_idf_vectorize(text):
 
 def do_Kmeans(n, v_matrix):
     kmeans = KMeans(n_clusters=n, random_state=2007).fit(v_matrix)
-    dump_path = 'KM-n{}.joblib'.format(str(n))
+    dump_path = 'KM-tfidf-n{}.joblib'.format(str(n))
     dump(kmeans, dump_path)
     return kmeans
-
-def test_predictions(km_obj, test_text, vectorizer):
-    test_predcluster = km_obj.predict(vectorizer.transform(test_text))
-    preds = list(zip(test_types, test_predcluster, test_text))
-    preds = pd.DataFrame.from_records(preds, columns = [ 'post_label', 'pred_cluster', 'title'])  
-    preds.to_csv('tables/test_predictions.csv')
-    return preds
 
 if __name__ == '__main__':  
     file_name = 'balanced_types_2500.csv'
@@ -85,9 +79,18 @@ if __name__ == '__main__':
     data.sample(frac=1, random_state = 1994) #shuffles data jic
     all_text = list(data['title'])
     
-    tf_idf = tf_idf_vectorize(all_text)
+    tf_idf = tf_idfvectorize(all_text)
 
-    # kmeans = do_Kmeans(6, tf_idf)
-    kmeans = load('KM-n6-tfidf.joblib')
-    test_predictions(kmeans, test_lines, tf_idf)
+    kmeans = do_Kmeans(10, tf_idf)
+    kmeans = load('KM-tfidf-n10.joblib')
+    labels = kmeans.labels_
+    silh_score = metrics.silhouette_score(tf_idf, labels, metric='euclidean')
+    print(silh_score)
     
+    vectorizer = TfidfVectorizer(preprocessor=preprocessing)
+    vectorizer.fit_transform(all_text)
+    test_predcluster = kmeans.predict(vectorizer.transform(test_lines))
+    preds = list(zip(test_types, test_predcluster, test_lines))
+    preds = pd.DataFrame.from_records(preds, columns = [ 'post_label', 'pred_cluster', 'title'])  
+    preds.to_csv('tables/test_predictions.csv')
+
