@@ -1,4 +1,5 @@
 import re
+import time
 import nltk
 import pandas as pd
 import string
@@ -66,9 +67,15 @@ def tf_idfvectorize(text):
     return tfidf
 
 def do_Kmeans(n, v_matrix):
-    kmeans = KMeans(n_clusters=n, random_state=2007).fit(v_matrix)
+    print('n_clusters = ', n,)
+    start = time.time()
+    kmeans = KMeans(n_clusters=n, random_state=1994).fit(v_matrix)
+    end = time.time()
+    print('Time to fit K-Means = ', end - start)
+
     dump_path = 'KM-tfidf-n{}.joblib'.format(str(n))
     dump(kmeans, dump_path)
+
     return kmeans
 
 if __name__ == '__main__':  
@@ -81,11 +88,11 @@ if __name__ == '__main__':
     
     tf_idf = tf_idfvectorize(all_text)
 
-    kmeans = do_Kmeans(10, tf_idf)
-    kmeans = load('KM-tfidf-n10.joblib')
+    kmeans = do_Kmeans(6, tf_idf)
+    # kmeans = load('KM-tfidf-n6.joblib')
     labels = kmeans.labels_
     silh_score = metrics.silhouette_score(tf_idf, labels, metric='euclidean')
-    print(silh_score)
+    print('Silhouette Score: ', silh_score)
     
     vectorizer = TfidfVectorizer(preprocessor=preprocessing)
     vectorizer.fit_transform(all_text)
