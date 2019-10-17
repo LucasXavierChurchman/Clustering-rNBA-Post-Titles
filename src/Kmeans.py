@@ -6,8 +6,8 @@ import string
 from datapipeline import pipeline
 from string import punctuation
 from nltk.corpus import stopwords
-from nltk.stem import SnowballStemmer
-from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.stem import SnowballStemmer, WordNetLemmatizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.cluster import KMeans
 from sklearn import metrics
 from joblib import dump, load
@@ -43,10 +43,12 @@ test_lines = ['Kristaps Porzingis Full Highlights 2019.10.14 Mavs vs Thunder - 1
         'Journalist gets quickly shut down when she asked James Harden, Russell Westbrook if they would refrain from speaking out on politics/social justice after China debacle',
         'Dragan Bender is averaging 13/6/3 in the pre season on 61/54/85. Also 1.5 blocks. He’s looked great so far',
         'Jordan is actually a great owner. Its just that he doesnt wanna win rings/make the playoffs. He just wants to make money. And hes damn good at it.',
-        '[Cunningham] The Minnesota Timberwolves have signed Tyus Battle and Barry Brown Jr, the team announced. Jordan Murphy and Lindell Wigginton have been waived to create the necessary room on the roster.']
+        '[Cunningham] The Minnesota Timberwolves hasnowball_stemmersnowball_stemmerve signed Tyus Battle and Barry Brown Jr, the team announced. Jordan Murphy and Lindell Wigginton have been waived to create the necessary room on the roster.']
 
 stopword = stopwords.words('english')
 snowball_stemmer = SnowballStemmer('english')
+
+lemmatizer = WordNetLemmatizer()
 
 def preprocessing(line):
     '''
@@ -54,19 +56,32 @@ def preprocessing(line):
     '''
     line = line.lower()
     line = re.sub(r"[{}]".format(string.punctuation), " ", line)
+    line = ''.join(c for c in line if not c.isdigit())
     line = nltk.word_tokenize(line)
     line = [snowball_stemmer.stem(word) for word in line]
+    # line = [lemmatizer.lemmatize(word) for word in line]
     line = ' '.join(line)
     return line
 
 def tf_idfvectorize(text):
+    start = time.time()
     vectorizer = TfidfVectorizer(preprocessor=preprocessing)
     tfidf = vectorizer.fit_transform(text)
     # vocab = vectorizer.vocabulary_
     # sorted_vocab = dict(sorted((value,key) for (key,value) in vocab.items()), reverse = True)
+    end = time.time()
+    print('Time to generate tf-idf = ', end - start)
     return tfidf
 
-def do_Kmeans(n, v_matrix):
+def cv_vectorize(text):
+    start = time.time()
+    vectorizer = CountVectorizer(preprocessor=preprocessing)
+    cv = vectorizer.fit_transform(text)
+    end = time.time()
+    print('Time to generate cv = ', end - start)
+    return cv
+
+def Kmeans_tfidf(n, v_matrix):
     print('n_clusters = ', n,)
     start = time.time()
     kmeans = KMeans(n_clusters=n, random_state=1994).fit(v_matrix)
@@ -74,6 +89,18 @@ def do_Kmeans(n, v_matrix):
     print('Time to fit K-Means = ', end - start)
 
     dump_path = 'models/KM-tfidf-n{}.joblib'.format(str(n))
+    dump(kmeans, dump_path)
+
+    return kmeans
+
+def Kmeans_cv(n, v_matrix):
+    print('n_clusters = ', n,)
+    start = time.time()
+    kmeans = KMeans(n_clusters=n, random_state=1994).fit(v_matrix)
+    end = time.time()
+    print('Time to fit K-Means = ', end - start)
+
+    dump_path = 'models/KM-cv-n{}.joblib'.format(str(n))
     dump(kmeans, dump_path)
 
     return kmeans
@@ -86,18 +113,21 @@ if __name__ == '__main__':
     data = data.sample(frac=1, random_state = 1994) #shuffles data jic
     all_text = list(data['title'])
     
-    tf_idf = tf_idfvectorize(all_text)
+    # vectorized = tf_idfvectorize(all_text)
+    vectorized = cv_vectorize(all_text)
 
-    # kmeans = do_Kmeans(4, tf_idf)
-    kmeans = load('models/KM-tfidf-n4.joblib')
+    # kmeans = Kmeans_tfidf(4, vectorized)
+    kmeans= Kmeans_cv(4, vectorized)
+    # kmeans = load('models/KM-cv-n4.joblib')
+
     labels = kmeans.labels_
-    silh_score = metrics.silhouette_score(tf_idf, labels, metric='cosine')
+    silh_score = metrics.silhouette_score(vectorized, labels, metric = 'cosine')
     print('Silhouette Score: ', silh_score)
     
-    vectorizer = TfidfVectorizer(preprocessor=preprocessing)
-    vectorizer.fit_transform(all_text)
-    test_predcluster = kmeans.predict(vectorizer.transform(test_lines))
-    preds = list(zip(test_types, test_predcluster, test_lines))
-    preds = pd.DataFrame.from_records(preds, columns = [ 'post_label', 'pred_cluster', 'title'])  
-    preds.to_csv('tables/test_predictions.csv')
+    # vectorizer = TfidfVectorizer(preprocessor=preprocessing)
+    # vectorizer.fit_transform(all_text)
+    # test_predcluster = kmeans.predict(vectorizer.transform(test_lines))
+    # preds = list(zip(test_types, test_predcluster, test_lines))
+    # preds = pd.DataFrame.from_records(preds, columns = [ 'post_label', 'pred_cluster', 'title'])  
+    # preds.to_csv('tables/test_predictions.csv')
 
