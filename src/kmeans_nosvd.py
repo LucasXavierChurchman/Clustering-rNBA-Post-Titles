@@ -1,18 +1,17 @@
+import re
+import time
+import nltk
+import pandas as pd
+import string
 from datapipeline import pipeline
 from string import punctuation
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer, WordNetLemmatizer
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.cluster import KMeans
-from sklearn.decomposition import TruncatedSVD
-from sklearn.pipeline import make_pipeline
 from sklearn import metrics
 from joblib import dump, load
-import re
-import time
-import nltk
-import pandas as pd
-import string
+
 
 test_types = ['highlights', 
         'highlights', 
@@ -64,10 +63,12 @@ def preprocessing(line):
     line = ' '.join(line)
     return line
 
-def tfidf_vectorize(text):
+def tf_idfvectorize(text):
     start = time.time()
     vectorizer = TfidfVectorizer(preprocessor=preprocessing)
     tfidf = vectorizer.fit_transform(text)
+    # vocab = vectorizer.vocabulary_
+    # sorted_vocab = dict(sorted((value,key) for (key,value) in vocab.items()), reverse = True)
     end = time.time()
     print('Time to generate tf-idf = ', end - start)
     return tfidf
@@ -80,23 +81,29 @@ def cv_vectorize(text):
     print('Time to generate cv = ', end - start)
     return cv
 
-def Kmeans_tfidf(n, tfidf):
-
-    svd = TruncatedSVD(n_components=750, random_state = 1994)
-    kmeans = KMeans(n_clusters=n, random_state=1994)
-    pipeline = make_pipeline(svd, kmeans)
-    print('n_clusters =', kmeans.n_clusters , 'n_components_svd =', svd.n_components)
+def Kmeans_tfidf(n, v_matrix):
+    print('n_clusters = ', n,)
     start = time.time()
-    svd_kmeans = pipeline.fit(tfidf)
-    labels = pipeline.predict(tfidf)
+    kmeans = KMeans(n_clusters=n, random_state=1994).fit(v_matrix)
     end = time.time()
-    print('Time to SVD and fit K-Means = ', end - start)
+    print('Time to fit K-Means = ', end - start)
 
     dump_path = 'models/KM-tfidf-n{}.joblib'.format(str(n))
-    dump(svd_kmeans, dump_path)
+    dump(kmeans, dump_path)
 
-    return svd_kmeans, labels
+    return kmeans
 
+def Kmeans_cv(n, v_matrix):
+    print('n_clusters = ', n,)
+    start = time.time()
+    kmeans = KMeans(n_clusters=n, random_state=1994).fit(v_matrix)
+    end = time.time()
+    print('Time to fit K-Means = ', end - start)
+
+    dump_path = 'models/KM-cv-n{}.joblib'.format(str(n))
+    dump(kmeans, dump_path)
+
+    return kmeans
 
 if __name__ == '__main__':  
     file_name = 'balanced_types_2500.csv'
@@ -106,12 +113,15 @@ if __name__ == '__main__':
     data = data.sample(frac=1, random_state = 1994) #shuffles data jic
     all_text = list(data['title'])
     
-    tfidf = tfidf_vectorize(all_text)
+    # vectorized = tf_idfvectorize(all_text)
+    vectorized = cv_vectorize(all_text)
 
-    svd_kmeans,labels = Kmeans_tfidf(4, tfidf)
-    # kmeans = load('models/KM-tfidf-n4.joblib')
+    # kmeans = Kmeans_tfidf(4, vectorized)
+    kmeans= Kmeans_cv(4, vectorized)
+    # kmeans = load('models/KM-cv-n4.joblib')
 
-    silh_score = metrics.silhouette_score(tfidf, labels, metric = 'cosine')
+    labels = kmeans.labels_
+    silh_score = metrics.silhouette_score(vectorized, labels, metric = 'cosine')
     print('Silhouette Score: ', silh_score)
     
     # vectorizer = TfidfVectorizer(preprocessor=preprocessing)
