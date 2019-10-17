@@ -83,15 +83,15 @@ if __name__ == '__main__':
     data_path = '~/Galvanize/Projects/data/Capstone2Data/{}'.format(file_name)
 
     data = pd.read_csv(data_path)
-    data.sample(frac=1, random_state = 1994) #shuffles data jic
+    data = data.sample(frac=1, random_state = 1994) #shuffles data jic
     all_text = list(data['title'])
     
     tf_idf = tf_idfvectorize(all_text)
 
-    kmeans = do_Kmeans(4, tf_idf)
-    # kmeans = load('models/KM-tfidf-n4.joblib')
+    # kmeans = do_Kmeans(4, tf_idf)
+    kmeans = load('models/KM-tfidf-n4.joblib')
     labels = kmeans.labels_
-    silh_score = metrics.silhouette_score(tf_idf, labels, metric='euclidean')
+    silh_score = metrics.silhouette_score(tf_idf, labels, metric='cosine')
     print('Silhouette Score: ', silh_score)
     
     vectorizer = TfidfVectorizer(preprocessor=preprocessing)
