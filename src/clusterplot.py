@@ -1,7 +1,8 @@
 from sklearn.datasets import make_blobs
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples, silhouette_score
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, TfidfTransformer
+from sklearn.decomposition import PCA
 from src.KmeansTFIDF import tf_idfvectorize, do_Kmeans
 from joblib import dump, load
 import matplotlib.pyplot as plt
@@ -31,7 +32,7 @@ X = tf_idfvectorize(all_text)
 #                   shuffle=True,
 #                   random_state=1)  # For reproducibility
 
-range_n_clusters = [2, 3, 4, 5, 6]
+range_n_clusters = [2, 3, 4]
 
 for n_clusters in range_n_clusters:
     # Create a subplot with 1 row and 2 columns
@@ -97,12 +98,15 @@ for n_clusters in range_n_clusters:
 
     # 2nd Plot showing the actual clusters formed
     colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
-
-    ax2.scatter(X[:, 0], X[:, 1], marker='.', s=30, lw=0, alpha=0.7,
+    tranformer = TfidfTransformer()
+    X_dense = tranformer.fit_transform(X).todense()
+    pca = PCA(n_components=2).fit(X_dense)
+    data2D = pca.transform(X_dense)
+    ax2.scatter(data2D[:, 0], data2D[:, 1], marker='.', s=30, lw=0, alpha=0.7,
                 c=colors, edgecolor='k')
 
     # Labeling the clusters
-    centers = clusterer.cluster_centers_
+    centers = kmeans.cluster_centers_
     # Draw white circles at cluster centers
     ax2.scatter(centers[:, 0], centers[:, 1], marker='o',
                 c="white", alpha=1, s=200, edgecolor='k')
@@ -119,5 +123,5 @@ for n_clusters in range_n_clusters:
                   "with n_clusters = %d" % n_clusters),
                  fontsize=14, fontweight='bold')
 
-plt.savefig('images/example.png')
-plt.show()
+    plt.savefig('images/silh_clusters_{}.png'.format(n_clusters))
+    plt.show()

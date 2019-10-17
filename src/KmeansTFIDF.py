@@ -88,8 +88,8 @@ if __name__ == '__main__':
     
     tf_idf = tf_idfvectorize(all_text)
 
-    kmeans = do_Kmeans(6, tf_idf)
-    # kmeans = load('models/KM-tfidf-n6.joblib')
+    kmeans = do_Kmeans(4, tf_idf)
+    # kmeans = load('models/KM-tfidf-n4.joblib')
     labels = kmeans.labels_
     silh_score = metrics.silhouette_score(tf_idf, labels, metric='euclidean')
     print('Silhouette Score: ', silh_score)
