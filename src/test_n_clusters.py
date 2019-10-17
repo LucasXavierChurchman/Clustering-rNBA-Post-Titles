@@ -14,17 +14,18 @@ all_text = list(data['title'])
 
 vectorized = cv_vectorize(all_text)
 
-range_n_clusters = [2, 3, 4, 5, 6]
+range_n_clusters = [2, 3, 4, 5, 6, 7, 8]
 
 dense_vec = vectorized.todense()
 
 for n_clusters in range_n_clusters:
     kmeans = Kmeans_cv(n = n_clusters, v_matrix = vectorized)
-    cluster_labels = kmeans.fit_predict(vectorized)
+    labels = kmeans.labels_
 
-    silhouette_avg = silhouette_score(vectorized, cluster_labels)
+    silhouette_avg = silhouette_score(vectorized, labels, metric =  'cosine')
     print("For n_clusters =", n_clusters,
           "The average silhouette_score is :", silhouette_avg)
 
     # Compute the silhouette scores for each sample
-    sample_silhouette_values = silhouette_samples(vectorized, cluster_labels)
+    sample_silhouette_values = silhouette_samples(vectorized, labels)
+    print(sample_silhouette_values)
