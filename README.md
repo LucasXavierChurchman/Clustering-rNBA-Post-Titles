@@ -1,5 +1,6 @@
 # Clustering r/NBA Post Titles
 ### Exploring Alternatives to the Current Reddit Tagging System
+![banner](https://github.com/LucasXavierChurchman/Clustering-rNBA-Post-Titles/blob/master/images/reddit-banner.jpg)
 
 by Lucas Churchman
 
