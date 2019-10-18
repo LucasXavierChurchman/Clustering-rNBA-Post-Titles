@@ -34,9 +34,9 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 <br>
 <br>
 
-- Roughly 80-90% of posts aren't tagged at all. This combined with Reddit's questionable search functionality, makes finding a specific post, even if you know how it *should* be tagged, impossible at times.
+- Roughly 80-90% of the posts aren't tagged at all. This combined with Reddit's questionable search functionality, makes finding a specific post, even if you know how it *should* be tagged, impossible at times.
 
-Because of these inconsitencies in these post taggings, I hope to find some sort of conistency in post title structure to see if a better tagging systyem could be implemented to better classify and filter posts.
+Because of these inconsistencies in these post taggings, I hope to find some sort of consistency in post title structure to see if a better tagging system could be implemented to better classify and filter posts.
 
 ## Data
 The data used was generated from [this](https://bigquery.cloud.google.com/table/fh-bigquery:reddit_comments.2015_05?pli=1) database on Google BigQuery. Many columns are available database, but only a few were needed here.
@@ -53,12 +53,12 @@ It wouldn't make sense to attempt to tag posts based on their title if posts tha
 
 - Highlights: Similar, 'exciting' language is used to describe highlight clips
 - Game Thread: Follow a consistent structure, title prefixed by "GAME THREAD". Should nearly trivial to cluster together
-- Postgame Thread: Similar as above
+- Post Game Thread: Similar as above
 - News: Often prefixed with the article/tweet authors name, use similar buzz words
 - Discussion: Often phrased as a question
 - Roster Moves: Use similar language, use city names more often and use words like "deal" and "negotiate" often
 
-The initial hypothesis is that these first there will generate distinct clusters while the later 3 will be less distinct
+The initial hypothesis is that these first there will generate distinct clusters while the latter 3 will be less distinct
 
 ![postsbytype](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/PostsByType.png)
 - Highlights are far and away the most used tag type. This probably because almost any video posted gets this tag whether it's actually a highlight clip or instead an interview, postgame conference etc. along with the fact that people like watching and sharing highlights. 
@@ -78,8 +78,8 @@ The initial hypothesis is that these first there will generate distinct clusters
 
 As with all NLP problems, the text went through a pre-processing pipeline. Here the (fairly standard) process was:
 
-- Casting to lower case
-- Removing punctation
+- Casting to lowercase
+- Removing punctuation
 - Stemming (Lemmatization was tried as well, but had better results with stemming)
 - Removed numbers (Important because 100 points in a box score is a lot different than 100 million dollars when talking about a contract)
 
@@ -89,13 +89,13 @@ Dimensionality reduction was done with SVD
 
 ![svd](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/SVDCumulativeVariance.png)
 
-800 features were decied to be used. Just around the 90% explained variance mark and a signifcant decrease from our original 7500 features (words).
+800 features were decided to be used. Just around the 90% explained variance mark and a significant decrease from our original 7500 features (words).
 
 The feature reduced model was fit with K-Means with k=6, hoping the original 6 types of posts would appear as their own cluster. 
 
 ![silhouette](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/Silhouette.png)
 
-As you can see, clusters 0 and 3 have fairly well defined structure (these are the game and post game clusters, which was expected), and the only reason the average silhouette score is just above 0, indicating some amount of cluster definition overall (silhouette scores range from -1 to 1). However, without these types of posts, the clusters would have little no structure at all.
+As you can see, clusters 0 and 3 have fairly well defined structure (these are the game and post game clusters, which was expected), and the only reason the average silhouette score is just above 0, indicating some amount of cluster definition overall (silhouette scores range from -1 to 1). However, without these types of posts, the clusters would have little to no overall structure at all.
 
 
 ![clustermap](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/ClusterMap.png)
@@ -168,3 +168,6 @@ and the steal in the steal"
 
 -**Epoch 5:** "LeBron James with a clutch for the NBA series after the steal of the first defensive props"
   
+
+
+
