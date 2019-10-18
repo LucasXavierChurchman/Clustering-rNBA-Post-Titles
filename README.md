@@ -36,12 +36,12 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 
 - Roughly 80-90% of posts aren't tagged at all. This combined with Reddit's questionable search functionality, makes finding a specific post, even if you know how it *should* be tagged, impossible at times.
 
-Because of these inconsitencies of post tagging, I hope to find conistency in post title structure to see if a better tagging systyem could be implemented to better classify and filter posts.
+Because of these inconsitencies in these post taggings, I hope to find some sort of conistency in post title structure to see if a better tagging systyem could be implemented to better classify and filter posts.
 
 ## Data
 The data used was generated from [this](https://bigquery.cloud.google.com/table/fh-bigquery:reddit_comments.2015_05?pli=1) database on Google BigQuery. Many columns are available database, but only a few were needed here.
 
-![notahighlight](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bigquerytable.png)
+![BQTable](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bigquerytable.png)
 
 where `link_flair_css_class` is the posts' tag type.
 
@@ -154,4 +154,10 @@ Game and postgame threads were clustered almost flawlessly while every other pos
   - Could be several text-preprocessing options that weren't explored. A big one would be converting names all to the same word or adding all names to stop words. Would probably help identify Roster news and Highlight posts easier.
   - With the process here it's hard to determine whether this clustering is actually categorizing better than Reddit's poor tagging system or vice versa.
   - Probably a problem better suited for topic modeling or sentiment analysis instead of clustering. Possibly a combination of all 3.
+  
+## Bonus
+My original goal was to train an RNN to generate title posts but didn't get far with it. Just for fun, here's some titles generated from a very poorly trained RNN with 5 epochs:
+
+-Epoch 1: "LeBron James on the same three on the same of the court to the comment on the shot to the shot on the game of the game of the game of the first court with a commeration on the game on the first poster of the game of the first play to the situation on the first court to the court to the game on the"
+-Epoch 3: "DeMar DeRozan with the steal and the best clutch leading to the stand to the season and the confirms in the steal and the steal in the steal"
   
