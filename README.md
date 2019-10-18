@@ -32,4 +32,13 @@ Also, even when posts do have tags, they are often miscategorized entirely. The 
 
 Furthermore, the difference in posts that should be tagged as "news" versus "rostermoves" versus "discussion" is vague at times.
 
-Because all of these inconsistencies, I'm going to explore if these posts can be clustered using K-Means using their titles.
+Because all of these inconsistencies in tagging, I'm going to explore if the **language** used in post titles is consistent enough to cluster together using Kmeans. If so, a better automated tagging or possible title generation system could be used for r/NBA and other subreddits.
+
+## Data
+The data used was generated from [this](https://bigquery.cloud.google.com/table/fh-bigquery:reddit_comments.2015_05?pli=1) database on Google BigQuery. Many columns are available database, but only a few were needed here.
+
+![notahighlight](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bigquerytable.png)
+
+where `link_flair_css_class` is the posts' tag type.
+
+A query for posts from January 2018 through August 2019 created a table of 517,547 post titles, although this was further narrowed down later.
