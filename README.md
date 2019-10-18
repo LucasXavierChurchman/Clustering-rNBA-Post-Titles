@@ -51,16 +51,18 @@ A query for posts from January 2018 through August 2019 generated a table of ove
 
 It wouldn't make sense to attempt to tag posts based on their title if posts that already do have tags don't have a consistent structure already. So, for this analysis, we'll look at posts with these tags for these reasons:
 
-- Highlights: Similar language is used to describe highlight clips
-- Game Thread: Follow a consistent structure, title prefixed by "GAME THREAD". Should nearly trivial to cluster.
+- Highlights: Similar, 'exciting' language is used to describe highlight clips
+- Game Thread: Follow a consistent structure, title prefixed by "GAME THREAD". Should nearly trivial to cluster together
 - Postgame Thread: Similar as above
 - News: Often prefixed with the article/tweet authors name, use similar buzz words
 - Discussion: Often phrased as a question
 - Roster Moves: Use similar language, use city names more often and use words like "deal" and "negotiate" often
 
+The initial hypothesis is that these first there will generate distinct clusters while the later 3 will be less distinct
+
 ![postsbytype](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/PostsByType.png)
-- Highlights are far and away the most used type tag. This probably because almost any video posted gets this tag whether it's actually a highlight clip or instead an interview, postgame conference etc. along with the fact that people like watching and sharing highlights. 
-- Similarly, any text article seems to automatically tagged as news, so it makes sense that would be the runner up. 
+- Highlights are far and away the most used tag type. This probably because almost any video posted gets this tag whether it's actually a highlight clip or instead an interview, postgame conference etc. along with the fact that people like watching and sharing highlights. 
+- Similarly, any text article/tweet seems to automatically tagged as news, so it makes sense that would be the runner up. 
 - Game and postgame threads having similar counts makes sense because there's only so many games per year. Not a perfect 1-to-1 ratio since postgame threads are auto-generated but game threads are usually user submitted.
 
 <br>
@@ -156,8 +158,9 @@ Game and postgame threads were clustered almost flawlessly while every other pos
   - Probably a problem better suited for topic modeling or sentiment analysis instead of clustering. Possibly a combination of all 3.
   
 ## Bonus
-My original goal was to train an RNN to generate title posts but didn't get far with it. Just for fun, here's some titles generated from a very poorly trained RNN with 5 epochs:
+My original goal was to train an RNN to generate title posts but didn't get far with it. Just for fun, here's some highlight titles generated using the pre-built `textgenrnn` package with 5 epochs and only 1000 samples:
 
 -Epoch 1: "LeBron James on the same three on the same of the court to the comment on the shot to the shot on the game of the game of the game of the first court with a commeration on the game on the first poster of the game of the first play to the situation on the first court to the court to the game on the"
 -Epoch 3: "DeMar DeRozan with the steal and the best clutch leading to the stand to the season and the confirms in the steal and the steal in the steal"
+-Epoch 5: "LeBron James with a clutch for the NBA series after the steal of the first defensive props"
   
