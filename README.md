@@ -9,7 +9,7 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 for example:
 
 ![beal1](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bealrostermove.png)
-
+<br>
 
 
 
@@ -18,12 +18,12 @@ However a post about the same player, when they ACTUALLY sign a contract can go 
 
 
 ![beal2](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bealnotag.png)
-
+<br>
 
 Also, even when posts do have tags, they are often miscategorized entirely. The "highlights" tag is supposed to be used for highlights from games, but here it was applied simply because the submission was a video link
 
 ![notahighlight](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/whyhighlight.png)
-
+<br>
 
 Furthermore, the difference in posts that should be tagged as "news" versus "rostermoves" versus "discussion" is vague at times.
 
