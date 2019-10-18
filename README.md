@@ -18,8 +18,7 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 <br>
 
 
-
-- However a post about the same player, when they *actually* sign a contract can go untagged (the majority posts go untagged even if they easily fall under an existing label)
+- However a post about the same player, when they *actually* sign a contract can go untagged (the majority posts go untagged even if they easily fall under an existing label).
 
 
 ![beal2](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bealnotag.png)
@@ -27,7 +26,7 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 <br>
 <br>
 
-- Also, even when posts do have tags, they are often miscategorized entirely. The 'Highlights' tag is supposed to be used for highlights from games, but here it was applied simply because the submission was a video link
+- Also, even when posts do have tags, they are often miscategorized entirely. The 'Highlights' tag is supposed to be used for highlights from games, but here it was applied simply because the submission was a video link.
 
 ![notahighlight](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/whyhighlight.png)
 <br>
@@ -39,7 +38,7 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 Because of these inconsistencies in these post taggings, I hope to find some sort of consistency in post title structure to see if a better tagging system could be implemented to better classify and filter posts.
 
 ## Data
-The data used was generated from [this](https://bigquery.cloud.google.com/table/fh-bigquery:reddit_comments.2015_05?pli=1) database on Google BigQuery. Many columns are available database, but only a few were needed here.
+The data used was generated from [this](https://bigquery.cloud.google.com/table/fh-bigquery:reddit_comments.2015_05?pli=1) database on Google BigQuery. Many columns are available on this database, but only a few were needed here.
 
 ![BQTable](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bigquerytable.png)
 
@@ -49,16 +48,16 @@ A query for posts from January 2018 through August 2019 generated a table of ove
 
 ## EDA
 
-It wouldn't make sense to attempt to tag posts based on their title if posts that already do have tags don't have a consistent structure already. So, for this analysis, we'll look at posts with these tags for these reasons:
+It wouldn't make sense to attempt to tag posts based on their title if posts that already do have tags don't have a consistent structure. So, for this analysis, we'll look at posts with these tags for these reasons:
 
-- Highlights: Similar, 'exciting' language is used to describe highlight clips
-- Game Thread: Follow a consistent structure, title prefixed by "GAME THREAD". Should nearly trivial to cluster together
-- Post Game Thread: Similar as above
-- News: Often prefixed with the article/tweet authors name, use similar buzz words
-- Discussion: Often phrased as a question
-- Roster Moves: Use similar language, use city names more often and use words like "deal" and "negotiate" often
+- Highlights: Similar, 'exciting' language is used to describe highlight clips.
+- Game Thread: Follow a consistent structure, title prefixed by "GAME THREAD". Should nearly trivial to cluster together.
+- Post Game Thread: Similar as above.
+- News: Often prefixed with the article/tweet authors name, use similar buzz words.
+- Discussion: Often phrased as a question.
+- Roster Moves: Use similar language, use city names more often and use words like "deal" and "negotiate" often.
 
-The initial hypothesis is that these first there will generate distinct clusters while the latter 3 will be less distinct
+The initial hypothesis is that these first there will generate distinct clusters while the latter 3 will be less distinct.
 
 ![postsbytype](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/PostsByType.png)
 - Highlights are far and away the most used tag type. This probably because almost any video posted gets this tag whether it's actually a highlight clip or instead an interview, postgame conference etc. along with the fact that people like watching and sharing highlights. 
@@ -85,7 +84,7 @@ As with all NLP problems, the text went through a pre-processing pipeline. Here 
 
 It's also important to mention count vectorization was used instead of a tf-idf matrix as it gave better results. 
 
-Dimensionality reduction was done with SVD
+Dimensionality reduction was done with SVD.
 
 ![svd](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/SVDCumulativeVariance.png)
 
@@ -97,10 +96,9 @@ The feature reduced model was fit with K-Means with k=6, hoping the original 6 t
 
 As you can see, clusters 0 and 3 have fairly well defined structure (these are the game and post game clusters, which was expected), and the only reason the average silhouette score is just above 0, indicating some amount of cluster definition overall (silhouette scores range from -1 to 1). However, without these types of posts, the clusters would have little to no overall structure at all.
 
-
 ![clustermap](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/ClusterMap.png)
 
-This cluster map gives a sense of how close the centers of each cluster are in the original feature space. The larger the circle, the more members in that cluster. Because this is only being plotted on two partial components, the circle sizes aren't a 1-to-1 representation of membership as indicated by the key on the bottom right.
+This cluster map gives a sense of how close the centers of each cluster are in the original feature space. The larger the circle, the more members in that cluster. Because this is only being plotted on two partial components, the circle sizes aren't a 1-to-1 representation of membership as indicated by the key on the bottom left.
 
 Posts per label:
 
