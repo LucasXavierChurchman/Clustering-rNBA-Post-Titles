@@ -15,16 +15,19 @@ for example:
 
 
 
-
 However a post about the same player, when they ACTUALLY sign a contract can go untagged (the majority posts go untagged even if they easily fall under an existing label)
 
 
 ![beal2](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bealnotag.png)
 <br>
+<br>
+<br>
 
 Also, even when posts do have tags, they are often miscategorized entirely. The "highlights" tag is supposed to be used for highlights from games, but here it was applied simply because the submission was a video link
 
 ![notahighlight](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/whyhighlight.png)
+<br>
+<br>
 <br>
 
 Furthermore, the difference in posts that should be tagged as "news" versus "rostermoves" versus "discussion" is vague at times.
