@@ -94,6 +94,10 @@ The feature reduced model was fit with K-Means with k=6, hoping the original 6 t
 
 As you can see, clusters 0 and 3 have fairly well defined structure (these are the game and post game clusters, which was expected), and the only reason the average silhouette score is just above 0, indicating some amount of cluster definition overall (silhouette scores range from -1 to 1). However, without these types of posts, the clusters would have little no structure at all.
 
+
+![clustermap](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/ClusterMap.png)
+This cluster map gives a sense of how close the centers of each cluster are in the original feature space. The larger the circle, the more members in that cluster. Because this is only being plotted on two partial components, the circle sizes aren't a 1-to-1 representation of membership as indicated by the key on the bottom right.
+
 Posts per label:
 
 | Label |Count |
