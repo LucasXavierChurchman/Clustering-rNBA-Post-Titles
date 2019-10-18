@@ -96,6 +96,7 @@ As you can see, clusters 0 and 3 have fairly well defined structure (these are t
 
 
 ![clustermap](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/ClusterMap.png)
+
 This cluster map gives a sense of how close the centers of each cluster are in the original feature space. The larger the circle, the more members in that cluster. Because this is only being plotted on two partial components, the circle sizes aren't a 1-to-1 representation of membership as indicated by the key on the bottom right.
 
 Posts per label:
