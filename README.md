@@ -35,7 +35,7 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 
 - Roughly 80-90% of posts aren't tagged at all. This combined with Reddit's questionable search functionality, makes finding a specific post, even if you know how it *should* be tagged, impossible at times.
 
-Because of the inconsitencies of post tagging, I hope to find structure in the post titles to see if a better tagging systyem could be implemented to better identify and filter posts
+Because of these inconsitencies of post tagging, I hope to find conistency in post title structure to see if a better tagging systyem could be implemented to better classify and filter posts.
 
 ## Data
 The data used was generated from [this](https://bigquery.cloud.google.com/table/fh-bigquery:reddit_comments.2015_05?pli=1) database on Google BigQuery. Many columns are available database, but only a few were needed here.
@@ -110,7 +110,7 @@ Posts per label:
 | 1     | 1684 |
 | 4     | 1108 |
 
-How posts were labeled compared to how they were tagged on Reddit:
+Even though this was an unsupervised model, it's helpful to look at how the model clustered compared to how they were tagged on Reddit.
 
 | index | cluster label | type on reddit | title                                                                                                                                                                                                   |
 | ----- | ------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
