@@ -135,11 +135,6 @@ def cluster_distance_map(text, model, cv):
     visualizer.show(outpath="plots/ClusterMap.png")
     plt.close()
 
-def look_at_labels(labels, titles):
-    labeled_titles = pd.DataFrame({'label':labels, 'title': titles})
-    return labeled_titles
-
-
 if __name__ == '__main__':  
     file_name = 'balanced_types_2500.csv'
     data_path = '~/Galvanize/Projects/data/Capstone2Data/{}'.format(file_name)
@@ -156,7 +151,13 @@ if __name__ == '__main__':
     # silhouette_plot(all_text, 'KM-nclusters-6.joblib', cv)
     # cluster_distance_map(all_text, 'KM-nclusters-6.joblib', cv)
 
-    labeled_titles = look_at_labels(labels, titles)
+    df = pd.DataFrame( {'post_number':range(len(titles)), 'label':labels } )
+
+    for i in [0,1,2,3,4,5]:
+        index = list(df[df['label']==i]['post_number'])
+        print(i, data['title'].iloc[index].head(5))
+        labeled_posts = pd.DataFrame( {'label': [i]*5 , 'title': data['title'].iloc[index].head()})
+        labeled_posts.to_csv('tables/labeled_posts_{}.csv'.format(str(i)))
     # vectorizer = TfidfVectorizer(preprocessor=preprocessing)
     # vectorizer.fit_transform(all_text)
     # test_predcluster = kmeans.predict(vectorizer.transform(test_lines))
