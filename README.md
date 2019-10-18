@@ -160,7 +160,10 @@ Game and postgame threads were clustered almost flawlessly while every other pos
 ## Bonus
 My original goal was to train an RNN to generate title posts but didn't get far with it. Just for fun, here's some highlight titles generated using the pre-built `textgenrnn` package with 5 epochs and only 1000 samples:
 
--Epoch 1: "LeBron James on the same three on the same of the court to the comment on the shot to the shot on the game of the game of the game of the first court with a commeration on the game on the first poster of the game of the first play to the situation on the first court to the court to the game on the"
--Epoch 3: "DeMar DeRozan with the steal and the best clutch leading to the stand to the season and the confirms in the steal and the steal in the steal"
--Epoch 5: "LeBron James with a clutch for the NBA series after the steal of the first defensive props"
+-**Epoch 1:** "LeBron James on the same three on the same of the court to the comment on the shot to the shot on the game of the game of the game of the first court with a commeration on the game on the first poster of the game of the first play to the situation on the first court to the court to the game on the"
+
+-**Epoch 3:** "DeMar DeRozan with the steal and the best clutch leading to the stand to the season and the confirms in the steal 
+and the steal in the steal"
+
+-**Epoch 5:** "LeBron James with a clutch for the NBA series after the steal of the first defensive props"
   
