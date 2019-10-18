@@ -5,15 +5,11 @@ import matplotlib.pyplot as plt
 from datapipeline import pipeline
 from matplotlib.pyplot import figure
 figure(num=None, figsize=(10, 6), dpi=80, facecolor='w', edgecolor='k')
-plt.style.use('ggplot')
+plt.style.use('seaborn')
 
 class EDA(object):
 
     def __init__(self):
-
-        file_name = '2018_01to2019_08.csv'
-        pipe = pipeline()
-        self.df = pipe.load_csv(file_name)
 
         self.types_wanted = ['highlights', 
                             'gamethread', 
@@ -23,12 +19,15 @@ class EDA(object):
                             'rostermoves']
 
     def summary_stats(self):
-        df = self.df
+        file_name = '~/Galvanize/Projects/data/Capstone2Data/balanced_types_2500.csv'
+        df = pd.read_csv(file_name)
         types = self.types_wanted
-
+        
         #All posts
         d1 = {'Avg Title Length (chars)': np.mean((df['title'].apply(len))),
             'Avg Title Length (words)': np.mean((df['title'].str.split().apply(len))),
+            'Max Title Length (words)': np.max((df['title'].str.split().apply(len))),
+            'Min Title Length (words)': np.min((df['title'].str.split().apply(len))),
             'Std Title Length (chars)': np.std((df['title'].apply(len))),
             'Std Title Length (words)': np.std((df['title'].str.split().apply(len)))}
 
@@ -39,14 +38,19 @@ class EDA(object):
         n_of_type = []
         avg_len_chars = []
         avg_len_words = []
+        max_len_words = []
+        min_len_words = []
         std_len_chars = []
         std_len_words = []
 
         for t in types:
             df_t = df[df['type'] == t]
+
             n_of_type.append(df_t.shape[0])
             avg_len_chars.append(np.mean((df_t['title'].apply(len))))
             avg_len_words.append(np.mean((df_t['title'].str.split().apply(len))))
+            max_len_words.append(np.max((df_t['title'].str.split().apply(len))))
+            min_len_words.append(np.min((df_t['title'].str.split().apply(len))))
             std_len_chars.append(np.std((df_t['title'].apply(len))))
             std_len_words.append(np.std((df_t['title'].str.split().apply(len))))
 
@@ -54,41 +58,66 @@ class EDA(object):
             'Number of Posts': n_of_type, 
             'Avg Title Length (chars)': avg_len_chars,
             'Avg Title Length (words)': avg_len_words,
+            'Max Title Length (words)': max_len_words,
+            'Min Title Length (words)': min_len_words,
             'Std Title Length (chars)': std_len_chars,
             'Std Title Length (words)': std_len_words}
+        # print(pd.DataFrame(d2))
         
         per_type_table = pd.DataFrame.from_dict(d2).round(2)
         per_type_table.to_csv('tables/SummaryStatsPerType.csv')
         return  all_table, per_type_table
 
     def summary_hist(self, table):
-        table = pd.read_csv('tables/SummaryStatsPerType.csv')
+        barWidth = 0.13
 
-        barWidth = 0.25
-        bars1 = table['Number of Posts']/100
-        bars2 = table['Avg Title Length (chars)']
-        bars3 = table['Avg Title Length (words)']
+        bars1 = table['Avg Title Length (words)']
+        bars2 = table['Max Title Length (words)']
+        bars3 = table['Min Title Length (words)']
+        bars4 = table['Std Title Length (words)']
 
         r1 = np.arange(len(bars1))
         r2 = [x + barWidth for x in r1]
         r3 = [x + barWidth for x in r2]
+        r4 = [x + barWidth for x in r3]
 
-        plt.bar(r1, bars1, color='purple', width=barWidth, edgecolor='white', label='Number of Posts/100')
-        plt.bar(r2, bars2, color= 'red', width=barWidth, edgecolor='white', label='Avg Title Length (chars)')
-        plt.bar(r3, bars3, color='orange', width=barWidth, edgecolor='white', label='Avg Title Length (words)')
-
+        plt.bar(r1, bars1, color= 'red', alpha = 0.69, width=barWidth,  label='Avg Title Length (words)')
+        plt.plot(r1, bars1, color='red',linewidth = 1, marker = 'o', mfc = 'black', linestyle = '--')
+        plt.bar(r2, bars2, color='orangered', alpha = 0.69, width=barWidth,  label='Max Title Length (words)')
+        plt.plot(r2, bars2, color='orangered',linewidth = 1, marker = 'o', mfc = 'black', linestyle = '--')
+        plt.bar(r3, bars3, color= 'aqua', alpha = 0.69, width=barWidth,  label='Min Title Length (words)')
+        plt.plot(r3, bars3, color= 'aqua',linewidth = 1, marker = 'o', mfc = 'black', linestyle = '--')
+        plt.bar(r4, bars4, color='orange', alpha = 0.69, width=barWidth, label='Std Title Length (words)')
+        plt.plot(r4, bars4, color='orange',linewidth = 1, marker = 'o', mfc = 'black', linestyle = '--')
         # plt.xlabel('group', fontweight='bold')
         plt.xticks( [r + barWidth for r in range(len(bars1))], table['Type'],
                     rotation = 45)
 
-        plt.title('Summary Statistics by Type')
-        plt.legend()
+        plt.title('Summary Statistics of Titles by Type', loc = 'left')
+        plt.legend(loc='lower left', bbox_to_anchor= (.5, 1), ncol=2, 
+            borderaxespad=0, frameon=False)
         plt.tight_layout()
-        plt.show()
-        plt.savefig('images/bar.png')
+        # plt.show()
+        plt.savefig('plots/BarStats.png')
+
+        plt.clf()
+
+        #Plt post counts
+        bars5 = table['Number of Posts']
+        r5 = [x+1 - 0.5 for x in range(len(bars5))]
+        figure(num=None, figsize=(12, 6), dpi=80, facecolor='w', edgecolor='k')
+        barWidth = 0.5
+        plt.bar(r5, bars5, color='purple', alpha = 0.69)
+        plt.xticks( [r + barWidth for r in range(len(bars5))], table['Type'],
+                    rotation = 45)
+        plt.title('Posts by Type')
+        
+        plt.tight_layout()
+        plt.savefig('plots/barcounts.png')
 
 if __name__ == '__main__':
+    table = pd.read_csv('tables/SummaryStatsPerType.csv')
     eda = EDA()
-    df = eda.df
     all_types, per_type = eda.summary_stats()
-    print(per_type)
+    eda.summary_hist(table = per_type)
+    
