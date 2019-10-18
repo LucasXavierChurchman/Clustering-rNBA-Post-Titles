@@ -11,6 +11,10 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 <br>
 <br>
 
+- Game threads are a perfect example when tags are used properly and their titles are consistently formatted 
+
+![gt](https://github.com/LucasXavierChurchman/Clustering-rNBA-Post-Titles/blob/master/images/gamethreadexample.png)
+
 - A post can be tagged as a 'Roster Move' even if it's just speculating on such an event
 
 ![beal1](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bealrostermove.png)
