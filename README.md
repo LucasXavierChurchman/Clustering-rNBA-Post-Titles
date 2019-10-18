@@ -10,6 +10,8 @@ for example:
 
 ![beal1](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bealrostermove.png)
 <br>
+<br>
+<br>
 
 
 
