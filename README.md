@@ -12,6 +12,9 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 <br>
 
 - Game threads are a perfect example when tags are used properly and their titles are consistently formatted 
+<br>
+<br>
+<br>
 
 ![gt](https://github.com/LucasXavierChurchman/Clustering-rNBA-Post-Titles/blob/master/images/gamethreadexample.png)
 
