@@ -9,7 +9,7 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 <br>
 <br>
 
-- A post can be tagged as a 'Rostermove' even if it's just speculating on such an event
+- A post can be tagged as a 'Roster Move' even if it's just speculating on such an event
 
 ![beal1](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bealrostermove.png)
 <br>
