@@ -174,7 +174,7 @@ My original goal was to train an RNN to generate title posts but didn't get far 
 -**Epoch 3:** "DeMar DeRozan with the steal and the best clutch leading to the stand to the season and the confirms in the steal 
 and the steal in the steal"
 
--**Epoch 5:** "LeBron James with a clutch for the NBA series after the steal of the first defensive props"
+-**Epoch 5:** "Derrick Wall Highlights 2018.11.12 vs Pacers (2018.02.04) - 22 Pts, 10 Rebs, 10 Rebs, 1 Reb, 5 Asts!"
   
 
 
