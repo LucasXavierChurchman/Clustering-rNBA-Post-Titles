@@ -143,56 +143,27 @@ if __name__ == '__main__':
     titles = list(data['title'])
     n_components = 800
 
+    n_clusters = 6
     cv = cv_vectorize(titles)
     # SVD_cum_var_plot(all_text)
     # svd(n_components, cv)
-    model, labels = svd_and_kmeans(6, 800, cv)
+    model, labels = svd_and_kmeans(n_clusters, 800, cv)
     # test_cluster_sizes(n_components, cv)
     # silhouette_plot(all_text, 'KM-nclusters-6.joblib', cv)
     # cluster_distance_map(all_text, 'KM-nclusters-6.joblib', cv)
 
     df = pd.DataFrame( {'post_number':range(len(titles)), 'label':labels } )
+    df = df.sample(frac = 1, random_state = 1997)
 
-    for i in [0,1,2,3,4,5]:
+    #Generate labeled posts
+    labeled_posts = []
+    for i in range(0,n_clusters):
         index = list(df[df['label']==i]['post_number'])
         print(i, data['title'].iloc[index].head(5))
-        labeled_posts = pd.DataFrame( {'label': [i]*5 , 'title': data['title'].iloc[index].head()})
-        labeled_posts.to_csv('tables/labeled_posts_{}.csv'.format(str(i)))
-    # vectorizer = TfidfVectorizer(preprocessor=preprocessing)
-    # vectorizer.fit_transform(all_text)
-    # test_predcluster = kmeans.predict(vectorizer.transform(test_lines))
-    # preds = list(zip(test_types, test_predcluster, test_lines))
-    # preds = pd.DataFrame.from_records(preds, columns = [ 'post_label', 'pred_cluster', 'title'])  
-    # preds.to_csv('tables/test_predictions.csv')
-
-    # test_types = ['highlights', 
-    #         'highlights', 
-    #         'gamethread', 
-    #         'gamethread',
-    #         'postgamethread', 
-    #         'postgamethread', 
-    #         'news',
-    #         'news',
-    #         'discussion',
-    #         'discussion',
-    #         'rostermoves',
-    #         'rostermoves'
-    #         'highlights',
-    #         'news']
-
-    # test_lines = ['Kristaps Porzingis Full Highlights 2019.10.14 Mavs vs Thunder - 17 Pts, 13 Rebs! | FreeDawkinsHighlights',
-    #         '[Highlight] Oubre puts on a happy face for the Joker',
-    #         'GAME THREAD: Minnesota Timberwolves (1-2) @ Indiana Pacers (3-0) - (October 15, 2019)',
-    #         'GAME THREAD: Haifa Maccabi Haifa (0-2) @ Minnesota Timberwolves (0-2) - (October 13, 2019)Game Thread',
-    #         '[Post Game Thread] The Brooklyn Nets sweep the Los Angeles Lakers in China by a score of 91-77 behind 22 points from Caris Levert',
-    #         '[Post Game Thread] The Phoenix Suns defeat the Portland Trail Blazers 134-118, with Booker, Rubio, and Ayton out due to load management',
-    #         '[Price] Seth Curry will not return due to a right knee contusion.'
-    #         'Lowry, Gasol, Ibaka, Powell and VanVleet are all out tonight. Raptors giving their regulars some rest after the quick turnaround coming back from Japan'
-    #         'Some Kobe stats from 2006, his scoring season was more impressive than hardens.',
-    #         'Predict your team’s best player’s stat line for the 2019-20 season',
-    #         'Some Kobe stats from 2006, his scoring season was more impressive than hardens',
-    #         'Do you think Lebron will sign one-year deal to return to Cavs for his final season farewell tour?'
-    #         'Journalist gets quickly shut down when she asked James Harden, Russell Westbrook if they would refrain from speaking out on politics/social justice after China debacle',
-    #         'Dragan Bender is averaging 13/6/3 in the pre season on 61/54/85. Also 1.5 blocks. He’s looked great so far',
-    #         'Jordan is actually a great owner. Its just that he doesnt wanna win rings/make the playoffs. He just wants to make money. And hes damn good at it.',
-    #         '[Cunningham] The Minnesota Timberwolves hasnowball_stemmersnowball_stemmerve signed Tyus Battle and Barry Brown Jr, the team announced. Jordan Murphy and Lindell Wigginton have been waived to create the necessary room on the roster.']
+        posts = pd.DataFrame( { 'cluster label': [i]*5 ,
+                                'type on reddit': data['type'].iloc[index].head(),
+                                'title': data['title'].iloc[index].head()},
+                                index = None)
+        labeled_posts.append(posts)
+    labeled_posts = pd.concat(labeled_posts)
+    labeled_posts.to_csv('tables/labeled_posts.csv')
