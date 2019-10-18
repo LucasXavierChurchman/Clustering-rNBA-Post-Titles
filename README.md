@@ -1,4 +1,5 @@
-# Clustering r/NBA post Titles
+# Clustering r/NBA Post Titles
+### Exploring Alternatives to the Current Reddit Tagging System
 
 by Lucas Churchman
 
