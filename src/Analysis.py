@@ -52,6 +52,7 @@ def svd_cum_var_plot(text):
     svd = TruncatedSVD(n_components=2000, random_state=1994)
     svd.fit(cv)
     features = range(svd.n_components)
+    print(features)
 
     print('Original number of features: ',  len(feature_names))
 

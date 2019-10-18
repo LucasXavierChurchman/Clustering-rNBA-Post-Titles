@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np 
 import matplotlib.pyplot as plt
 import matplotlib.pyplot as plt
-from datapipeline import pipeline
+from DataPipeline import pipeline
 from matplotlib.pyplot import figure
 figure(num=None, figsize=(10, 6), dpi=80, facecolor='w', edgecolor='k')
 plt.style.use('seaborn')

@@ -72,15 +72,17 @@ if __name__ == '__main__':
     data = pipe.load_csv(file_name)
 
     data = pipe.eliminate_outliers(data)
-    n_samp = 2500
-    types =  ['highlights', 'gamethread', 'postgamethread', 'news','discussion', 'rostermoves']
-    type_samples = []
+    # n_samp = 2500
+    # types =  ['highlights', 'gamethread', 'postgamethread', 'news','discussion', 'rostermoves']
+    # type_samples = []
 
-    for t in types:
-        samp = pipe.sample(df = data, post_type = t, n = n_samp)
-        type_samples.append(samp)
+    # for t in types:
+    #     samp = pipe.sample(df = data, post_type = t, n = n_samp)
+    #     type_samples.append(samp)
         
-    balanced_df = pd.concat(type_samples)
-    pipe.save_csv(balanced_df, 'balanced_types_' + str(n_samp))
+    # balanced_df = pd.concat(type_samples)
+    # pipe.save_csv(balanced_df, 'balanced_types_' + str(n_samp))
 
+    unbalanced_df = data.sample(15000)
+    pipe.save_csv(unbalanced_df, 'unbalanced_types_15000')
         
