@@ -6,6 +6,10 @@ On many subreddits, posts can be labeled by what "type" post they are which can 
 
 ![beal1](https://github.com/LucasXavierChurchman/Capstone2/blob/master/images/bealrostermove.png)
 
+
+
+
+
 However a post about the same player, when they ACTUALLY sign a contract can go untagged
 
 
