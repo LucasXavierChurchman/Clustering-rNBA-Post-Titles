@@ -92,6 +92,8 @@ The feature reduced model was fit with K-Means with k=6, hoping the original 6 t
 
 ![silhouette](https://github.com/LucasXavierChurchman/Capstone2/blob/master/plots/Silhouette.png)
 
+As you can see, clusters 0 and 3 have fairly well defined structure (these are the game and post game clusters, which was expected), and the only reason the average silhouette score is just above 0, indicating some amount of cluster definition overall (silhouette scores range from -1 to 1). However, without these types of posts, the clusters would have little no structure at all.
+
 Posts per label:
 
 | Label |Count |
@@ -103,12 +105,47 @@ Posts per label:
 | 1     | 1684 |
 | 4     | 1108 |
 
-As you can see, clusters 0 and 3 have fairly well defined structure (these are the game and post game clusters, which was expected), and the only reason the average silhouette score is just above 0, indicating some amount of cluster definition overall (silhouette scores range from -1 to 1). However, without these types of posts, the clusters would have little no structure at all.
+How posts were labeled compared to how they were tagged on Reddit:
 
+| index | cluster label | type on reddit | title                                                                                                                                                                                                   |
+| ----- | ------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 4640  | 0             | gamethread     | GAME THREAD: Toronto Raptors (2-2) @ Milwaukee Bucks (2-2) - (May 23, 2019)                                                                                                                             |
+| 3764  | 0             | gamethread     | GAME THREAD: Minnesota Timberwolves (30-18) @ LA Clippers (23-22) - (January 22, 2018)                                                                                                                  |
+| 4454  | 0             | gamethread     | GAME THREAD: Brooklyn Nets (40-40) @ Indiana Pacers (47-33) - (April 07, 2019)                                                                                                                          |
+| 3047  | 0             | gamethread     | GAME THREAD: Minnesota Timberwolves (30-18) @ LA Clippers (23-22) - (January 22, 2018)                                                                                                                  |
+| 2635  | 0             | gamethread     | GAME THREAD: Dallas Mavericks (27-37) @ Orlando Magic (30-36) - (March 08, 2019)                                                                                                                        |
+| 14118 | 1             | rostermoves    | The Blazers should do whatever it takes to sign Rudy Gay                                                                                                                                                |
+| 12550 | 1             | rostermoves    | [Wojnarowski] Golden State is moving Shabazz Napier, Treveon Graham and cash onto Minnesota, league sources tell ESPN. Napier and Graham are part of the D'Angelo Russell sign-and-trade.               |
+| 9456  | 1             | news           | [Nicholas] “I’m shocked, SHOCKED to find gambling going on here.” (sigh) Seriously someone needs to explain to me why the NBA still has tampering rules. No one follows them. Can’t we just move on?    |
+| 13105 | 1             | rostermoves    | [Daryl Morey] "The fit we envisioned when Carmelo chose to sign with the Rockets has not materialized, therefore we thought it was best to move on as any other outcome would have been unfair to him." |
+| 9936  | 1             | news           | [Amick] The Kings have extended a qualifying offer to Willie Cauley-Stein, a source with knowledge tells @TheAthletic, making him a restricted free agent.                                              |
+| 10028 | 2             | discussion     | DeMar DeRozan is one of the biggest playoff chokers of this decade and that’s backed by stats                                                                                                           |
+| 17    | 2             | highlights     | Hornets GM Mitch Kupchak on Kemba's comments about taking less than the supermax: "I don't know if his representatives approved of that comment, but I guess we'll find out."                           |
+| 14633 | 2             | rostermoves    | Predicting where all the 2019 free agents sign                                                                                                                                                          |
+| 12428 | 2             | discussion     | Using the NBA's Stats website, how to you figure out what percentile a player is in for a given category?                                                                                               |
+| 9495  | 2             | news           | The #sixers shot 30.2% on uncontested field goal attempts last night. Thirty point two percent. Had 25 3pta with 4+ feet of space, shot just 24% on them.                                               |
+| 7318  | 3             | postgamethread | [Serious Next Day Thread] The Boston Celtics defeat the Philadelphia 76ers, 101-98                                                                                                                      |
+| 6955  | 3             | postgamethread | [Post Game Thread] The Los Angeles Clippers (30-26) defeat the Boston Celtics (40-19), 129-119.                                                                                                         |
+| 5524  | 3             | postgamethread | [Post Game Thread] The Boston Celtics (50-23) defeat the Sacramento Kings (24-50) 104-93 behind Terry Rozier's 33 points                                                                                |
+| 5572  | 3             | postgamethread | [Post Game Thread] The Los Angeles Clippers (15-19) defeat the Charlotte Hornets (13-22) 108-105Post Game Thread                                                                                        |
+| 5453  | 3             | postgamethread | [Post Game Thread] Lakers (34-44) defeat the (45-34) Spurs 122-112 behind Kuzma's 33pts, sweeping them this season                                                                                      |
+| 11171 | 4             | discussion     | [ESPNStatsInfo] Joel Embiid and Ben Simmons combined for 30 points in the 1st half, 2 shy of the Pistons' entire team. Philly's 30-point halftime lead is the team's largest since 2012.                |
+| 10140 | 4             | discussion     | How do I check what someone's stats look like when they are on the floor with a specific player... and when they are playing when a specific player is on the bench?                                    |
+| 12350 | 4             | discussion     | Of all the superstars/stars this season wih the qualifying MVP stats, James Harden needs the most help, so therefore.....                                                                               |
+| 1861  | 4             | highlights     | One of the most embarrassing late game sequences in the fourth quarter                                                                                                                                  |
+| 14099 | 4             | rostermoves    | [Wojnarowski] Source: Memphis sent $1.5M in cash to Kings in Garrett Temple trade --- which is the equivalent of Deyonta Davis' salary. If Kings waive him, Grizzlies covered the cost                  |
+| 270   | 5             | highlights     | Bradley Beal 34 Pts and John Wall 25 Pts Full Highlights vs Grizzlies (2018.01.05)                                                                                                                      |
+| 13387 | 5             | rostermoves    | NBA free agency rumors: Cavaliers hoping to re-sign Jeff Green | NBA                                                                                                                                    |
+| 252   | 5             | highlights     | LeBron creates his own lane, then hammers it home                                                                                                                                                       |
+| 12778 | 5             | rostermoves    | How LeBron, LA Lakers Can Claim a Top-4 Seed out West This Season                                                                                                                                       |
+| 9906  | 5             | news           | [Charania] Los Angeles Lakers coach Luke Walton has been fined $15,000 for public comments on officiating Monday night.                                                                                 |
+|       |
 
+Game and postgame threads were clustered almost flawlessly while every other post type is all over the place.
 
 ## Conclusions
   - The posts that are often generated by bots (Game Thread, Postgame Thread) were obviously the most easy to identify and cluster together.
   - Could be several text-preprocessing options that weren't explored. A big one would be converting names all to the same word or adding all names to stop words. Would probably help identify Roster news and Highlight posts easier.
-  - Probably a problem better suited for topic modeling (looking at keywords rather than vector similarity)
+  - With the process here it's hard to determine whether this clustering is actually categorizing better than Reddit's poor tagging system or vice versa.
+  - Probably a problem better suited for topic modeling (looking at similar keywords rather than vector similarity)
   
